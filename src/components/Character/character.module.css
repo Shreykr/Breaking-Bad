@@ -1,0 +1,124 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../assets/bb.webp");
+  margin: auto;
+}
+
+.character__card {
+  width: 900px;
+  max-width: 1250px;
+  background: rgb(0, 0, 0);
+  color: white;
+  display: flex;
+  flex-flow: row;
+  border-radius: 10px;
+  box-shadow: 1px 1px 6px #3a383a, -1px -1px 6px #1e1d1d;
+  margin: auto;
+}
+
+.card__image_container {
+  height: 100%;
+  width: 40%;
+}
+
+.card__image {
+  height: 100%;
+  width: auto;
+  border-radius: 10px 0px 0px 10px;
+  cursor: pointer;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.character_card__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 10px 0px 0px 0px;
+}
+
+.card__name {
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.card__info {
+  width: 100%;
+  font-size: clamp(0.85rem, 1vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card__row {
+  width: 100%;
+  border-top: solid 0.01em rgb(83, 83, 83);
+  display: flex;
+  flex-flow: row;
+}
+
+.card__row > span:first-child {
+  width: 20%;
+  background: #302f2f;
+  justify-content: center;
+}
+
+.card__row > span:last-child {
+  width: 80%;
+}
+
+.card__row > span {
+  padding: 10px 35px;
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 992px) and (min-height: 370px) {
+  .character__card {
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-height: 800px;
+    max-width: 95%;
+  }
+
+  .card__image_container {
+    height: auto;
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card__image {
+    height: 175px;
+    width: 175px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .card__name {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+/* @media screen and (max-width: 565px) {
+  .character_card {
+    width: 90%;
+    height: 30%;
+  }
+}  */

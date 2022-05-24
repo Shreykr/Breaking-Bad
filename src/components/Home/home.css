@@ -1,0 +1,11 @@
+.container {
+  padding: 50px;
+  width: 100vw;
+  max-width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 75px;
+  background-image: url("../../assets/bb.webp");
+  background-size: contain;
+}
