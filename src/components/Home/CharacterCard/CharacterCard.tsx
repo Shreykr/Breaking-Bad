@@ -5,13 +5,13 @@ import './character-card.css';
 interface CharacterCardProps {
 
     character:Character,
-    handleClick: (name: string) => void
+    handleClick: (name: string,character:Character) => void
 }
 
-const CharacterCard:React.FC<CharacterCardProps> = ({ character, handleClick }) => {
+const CharacterCard: React.FC<CharacterCardProps> = ({ character, handleClick }) => {
     return (
         <>
-            <div className='card' onClick={()=>{handleClick(character.name)}}>
+            <div className='card' onClick={()=>{handleClick(character.name, character)}}>
                 <div className='image-container'>
                     <img src={character.img} className='card-image' alt={character.name} height="262.69" width="216" decoding="async"/>
                 </div>

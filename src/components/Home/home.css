@@ -9,3 +9,13 @@
   background-image: url("../../assets/bb.webp");
   background-size: contain;
 }
+
+.initial__state {
+  align-items: center;
+  height: 100vh;
+}
+
+.character-not-found,
+.character-spinner {
+  font-size: clamp(1rem, 2vw, 1.75rem);
+}

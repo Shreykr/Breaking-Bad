@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import characterStyles from './character.module.css';
 import useSound from 'use-sound';
 import walter from "../../assets/Audio/GG.mp3";
@@ -25,44 +25,59 @@ interface BbCharacter {
   length:number
 }
 
-const Character:React.FC = () => {
-  let { character } = useParams<string>();
+const Character: React.FC = () => {
+  let { character } = useParams();
   const [bbCharacter, bbSetCharacter] = useState<BbCharacter>();
-  let songImport;
-  switch (character) {
-    case 'Jesse+Pinkman': {
+  let songImport:string = 'default';
+  let { state }: any  = useLocation();
+
+  useEffect(() => {
+    (async () => {
+      if (!state) {
+        let result = await axios.get(`https://www.breakingbadapi.com/api/characters?name=${character}`);
+        await bbSetCharacter(result.data[0]);
+      }
+      else{
+        await bbSetCharacter(state);
+      }
+    })();
+
+    return () => {
+      stop();
+    }
+  }, [])
+
+  character = character!.replace('+', ' ')
+  const characterName = state ? state.name : character;
+
+  switch (characterName) {
+    case 'Jesse Pinkman': {
       songImport = jesse;
       break;
     }
-    case 'Walter+White': {
+    case 'Walter White': {
       songImport = walter;
       break;
     }
-    case 'Saul+Goodman': {
+    case 'Saul Goodman': {
       songImport = saul;
       break;
     }
-    case 'Gustavo+Fring': {
+    case 'Gustavo Fring': {
       songImport = gus;
       break;
     }
-    case 'Henry+Schrader': {
+    case 'Henry Schrader': {
       songImport = hank;
       break;
     }
-    case 'Mike+Ehrmantraut': {
+    case 'Mike Ehrmantraut': {
       songImport = mike;
       break;
     }
   }
-  const [play] = useSound(songImport,{interrupt: true,volume:0.4});
 
-  useEffect(() => {
-    (async () => {
-      let result = await axios.get(`https://www.breakingbadapi.com/api/characters?name=${character}`);
-      await bbSetCharacter(result.data[0]);
-    })();
-  },[])
+  const [play, {stop}] = useSound(songImport, {interrupt: true, volume: 0.6 });
 
   return (
     <>
@@ -71,7 +86,7 @@ const Character:React.FC = () => {
           bbCharacter &&
           <div className={characterStyles.character__card} >
               <div className={characterStyles.card__image_container} >
-              <img src={bbCharacter.img} className={characterStyles.card__image} alt={bbCharacter.name} height={262.69} width={216} onClick={()=>play()} />
+                <img src={bbCharacter.img} className={characterStyles.card__image} alt={bbCharacter.name} height={262.69} width={216} onClick={() => play()}  />
             </div>
             <div className={characterStyles.character_card__details}>
               <div className={characterStyles.card__name}>

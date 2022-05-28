@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import './home.css';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import {NavigateFunction, useNavigate} from 'react-router-dom';
 import CharacterCard from './CharacterCard/CharacterCard';
+import Spinner from '../../core/Spinner/Spinner'
+
 export interface Character {
   appearance: number[];
   better_call_saul_appearance: number,
@@ -20,27 +22,41 @@ export interface Character {
 const Home: React.FC = () => {
 
   let [characterData, setCharacterData] = useState<Character[]>();
-  let navigate = useNavigate();
+  const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
+  let navigate: NavigateFunction = useNavigate();
+  let firstLoad:React.MutableRefObject<boolean> = useRef(false);
 
   useEffect(() => {
     (async () => {
-    let result = await axios.get('https://www.breakingbadapi.com/api/characters');
-    setCharacterData(result.data);
+      let result = await axios.get('https://www.breakingbadapi.com/api/characters');
+      setTimeout(() => {
+        setCharacterData(result.data);
+      }, 600);
+      setTimeout(async () => {
+        await setLoadingStatus(false);
+        firstLoad.current = true;
+      }, 700);
     })();
   }, []);
 
-  const handleClick = (name: string) => {
-    name = name.replace(' ','+')
-    navigate('/character/' + name);
+  const navigateFunction = (name: string, character:Character) => {
+    name = name.replace(' ', '+');
+    name = '/character/' + name;
+    navigate(name,{ state: character });
   }
 
   return (
     <>
-      <div className='container'>
-        {
-          characterData && characterData.map((character:Character) => (
-            <CharacterCard key={character.char_id} character={character} handleClick={handleClick} />
-          ))
+      <div className={'container' + (!firstLoad.current && loadingStatus && characterData?.length !== 0 ? ' initial__state':'')  }>
+        {!firstLoad.current && loadingStatus ?
+          <div className='character-spinner'>
+            <Spinner />
+          </div>: (characterData?.length !== 0 || characterData !== undefined) ? characterData?.map((character: Character) => (
+            <CharacterCard key={character.char_id} character={character} handleClick={navigateFunction} />
+          )) :
+          <div className='character-not-found'>
+            <strong>No Characters Found</strong> 😥
+          </div>
         }
       </div>
     </>
