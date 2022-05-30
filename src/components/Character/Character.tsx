@@ -25,11 +25,13 @@ interface BbCharacter {
   length:number
 }
 
+
+
 const Character: React.FC = () => {
   let { character } = useParams();
   const [bbCharacter, bbSetCharacter] = useState<BbCharacter>();
-  let songImport:string = 'default';
-  let { state }: any  = useLocation();
+  let songImport: string = 'default';
+  let { state }:any = useLocation();
 
   useEffect(() => {
     (async () => {
